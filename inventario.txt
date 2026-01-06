@@ -1,0 +1,2 @@
+Marca                Tipo       Modelo     Estado     Anio       Precio    
+jasd                 camioneta  dmax       usado      2003       2534543.00
