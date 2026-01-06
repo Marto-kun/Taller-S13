@@ -19,13 +19,28 @@ int main(int argc, char *argv[])
     int count = 0;
     char entrada[40];
     int opc1;
-    FILE *archivo;
-    archivo = fopen("inventario.txt", "w");
 
-    if (archivo == NULL)
+    // Creacion del archivo
+    FILE *archivo;
+    archivo = fopen("inventario.txt", "r");
+
+    if (archivo != NULL)
     {
-        printf("\nError, no se pudo abrir el archivo");
-        return 1;
+        fclose(archivo);
+    }
+    else
+    {
+        fclose(archivo);
+        archivo = fopen("inventario.txt", "a");
+
+        if(archivo == NULL){
+            perror("\nError al crear el archivo.");
+            return 1;
+        }
+
+        fprintf(archivo, "%-20s %-10s %-10s %-10s %-10s %-10s\n", "Marca", "Tipo", "Modelo", "Estado", "Anio", "Precio");
+        fclose(archivo);
+        printf("\nEl archivo fue creado con exito!");
     }
 
     int opcValida = 0;
@@ -41,6 +56,7 @@ int main(int argc, char *argv[])
         printf("\n7) Busqueda de vehiculo por Precio");
         printf("\n8) Salir");
         printf("\n>>> ");
+        //LimpiarBuffer();
 
         if (fgets(entrada, 25, stdin) == NULL)
         {
@@ -98,6 +114,7 @@ int main(int argc, char *argv[])
 
         } while (marcaValida == 0);
 
+
         // Tipo de vehiculo
         int tipoValido = 0;
         do
@@ -125,6 +142,7 @@ int main(int argc, char *argv[])
 
         } while (tipoValido == 0);
 
+
         // Modelo del vehiculo
         int modeloValido = 0;
         do
@@ -151,6 +169,7 @@ int main(int argc, char *argv[])
             }
 
         } while (modeloValido == 0);
+
 
         // Precio del vehiculo
         int precioValido = 0;
@@ -202,7 +221,7 @@ int main(int argc, char *argv[])
                 if (anioIngresado > 1950)
                 {
                     nuevo[count].anio = anioIngresado;
-                    anioValido = 0;
+                    anioValido = 1;
                 }
                 else
                 {
@@ -211,13 +230,14 @@ int main(int argc, char *argv[])
             }
 
         } while (anioValido == 0);
+        
 
         // Estado del vehiculo
         int estadoValido = 0;
         do
         {
             printf("\nIngrese el estado del auto: ");
-            if (fgets(entrada, 5, stdin) == NULL)
+            if (fgets(entrada, 10, stdin) == NULL)
             {
                 LimpiarBuffer();
                 continue;
@@ -239,8 +259,15 @@ int main(int argc, char *argv[])
 
         } while (estadoValido == 0);
 
+
+        archivo = fopen("inventario.txt", "a");
+        archivo;
+        fprintf(archivo, "%-20s %-10s %-10s %-10s %-10s %-10s\n", nuevo[count].marca, nuevo[count].tipo, nuevo[count].modelo, nuevo[count].precio, nuevo[count].anio, nuevo[count].estado);
+        fclose(archivo);
+
         // Aumentar la cantidad de productos ingresados
         count++;
+
         break;
 
     case 2:
@@ -248,8 +275,6 @@ int main(int argc, char *argv[])
     default:
         break;
     }
-
-    
 
     return 0;
 }
