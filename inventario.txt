@@ -1,2 +1,5 @@
 Marca                Tipo       Modelo     Estado     Anio       Precio    
 jasd                 camioneta  dmax       usado      2003       2534543.00
+kia                  auto       picanto    nuevo      2003       34534.34  
+chevrolet            jeep       vitara     usado      2011       2.30      
+kia                  SUV        Sportage   nuevo      2025       5235254.50

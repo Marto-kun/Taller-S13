@@ -152,3 +152,32 @@ int esVacia(char *str)
     }
     return 1;
 }
+
+void Busqueda(char *buscar[50], const char *archivo)
+{
+    int count = 0;
+    FILE *file = fopen(archivo, "r");
+
+    if (file == NULL)
+    {
+        perror("\nError al abrir el archivo");
+        return;
+    }
+
+    char buffer[100];
+
+    while(fgets(buffer, sizeof(buffer), file)){
+        if(strstr(buffer, buscar)!= NULL){
+            printf("\n %s", buffer);
+            count++;
+        }
+    }
+    if (count == 0)
+    {
+        printf("\nNo se ha encontrado ninguna coincidencia");
+    }else{
+        printf("\nSe han encontrado %i vehiculo(s) con su busqueda", count);
+    }
+    
+    fclose(file);
+}

@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
 {
     Auto nuevo[10];
     int count = 0;
-    char entrada[40];
+    char entrada[50];
+    char *busqueda[50];
     int opc1;
 
     // Creacion del archivo
@@ -49,15 +50,10 @@ int main(int argc, char *argv[])
         int opcValida = 0;
         do
         {
-            printf("\nElija una opción: ");
-            printf("\n1) Ingreso de nuevo vehículo");
-            printf("\n2) Busqueda de vehiculo por Marca");
-            printf("\n 3) Busqueda de vehiculo por Tipo");
-            printf("\n4) Busqueda de vehiculo por Modelo");
-            printf("\n5) Busqueda de vehiculo por Estado");
-            printf("\n6) Busqueda de vehiculo por Anio de Fabricacion");
-            printf("\n7) Busqueda de vehiculo por Precio");
-            printf("\n8) Salir");
+            printf("\nElija una opcion: ");
+            printf("\n1) Ingreso de nuevo vehiculo");
+            printf("\n2) Busqueda de vehiculo");
+            printf("\n3) Salir");
             printf("\n>>> ");
             // LimpiarBuffer();
 
@@ -91,6 +87,7 @@ int main(int argc, char *argv[])
                 printf("\nSolo se pueden ingresar 10 vehiculos, regresando al menu principal");
                 break;
             }
+
             // Marca de vehiculo
             int marcaValida = 0;
             do
@@ -236,7 +233,7 @@ int main(int argc, char *argv[])
             int estadoValido = 0;
             do
             {
-                printf("\nIngrese el estado del auto: ");
+                printf("\nIngrese el estado del auto (Nuevo o Usado): ");
                 if (fgets(entrada, 10, stdin) == NULL)
                 {
                     LimpiarBuffer();
@@ -264,15 +261,50 @@ int main(int argc, char *argv[])
 
             // Aumentar la cantidad de productos ingresados
             count++;
-
             break;
 
         case 2:
 
+            // Verificacion de busqueda
+            int busquedaValida = 0;
+            do
+            {
+                printf("\nIngrese la busqueda que desea realizar: ");
+                if (fgets(entrada, 50, stdin) == NULL)
+                {
+                    LimpiarBuffer();
+                    continue;
+                }
+
+                // Eliminar el salto de línea al final de la cadena
+                entrada[strcspn(entrada, "\n")] = '\0';
+
+                if (VerificacionChar(entrada) == 1)
+                {
+                    strcpy(busqueda, entrada);
+                    busquedaValida = 1;
+                }
+                else
+                {
+                    printf("\nSolo se permiten letras. Intentelo de nuevo.");
+                    busquedaValida = 0;
+                }
+
+            } while (busquedaValida == 0);
+
+            Busqueda(&busqueda, "inventario.txt");
+
+            break;
+
+        case 3:
+            printf("\nGracias por usar nuestro sistema. Saliendo!!");
+            break;
+
         default:
+            printf("\nOpcion invalida, intentelo de nuevo...");
             break;
         }
-    } while (opc1 != 8);
+    } while (opc1 != 3);
 
     return 0;
 }
