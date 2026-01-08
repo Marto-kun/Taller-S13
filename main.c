@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "validaciones.h"
+#include "funciones.h"
 
 int main(int argc, char *argv[])
 {
     int count = 0;
+    int opc1;
+    float presupuestoMax = 0;
     char entrada[50];
     char busqueda[50];
-    int opc1;
 
     // Creacion del archivo
     FILE *archivo;
@@ -34,11 +35,44 @@ int main(int argc, char *argv[])
         printf("\nEl archivo fue creado con exito!");
     }
 
+    printf("\nConcesionaria Ruedas de Oro");
+    int presupuestoValido = 0;
+    do
+    {
+        printf("\nIngrese el presupuesto maximo del cliente: ");
+
+        if (fgets(entrada, 25, stdin) == NULL)
+        {
+            LimpiarBuffer();
+            continue;
+        }
+
+        // Eliminar salto de linea
+        entrada[strcspn(entrada, "\n")] = '\0';
+
+        if (VerificacionFloat(entrada) == 1)
+        {
+            float presupuestoIngresado = atof(entrada);
+            if (presupuestoIngresado > 5000)
+            {
+                presupuestoMax = presupuestoIngresado;
+                presupuestoValido = 1;
+            }
+            else
+            {
+                printf("Se debe ingresar un presupuesto mayor a $5000");
+                presupuestoValido = 0;
+            }
+        }
+
+    } while (presupuestoValido == 0);
+
     do
     {
         int opcValida = 0;
         do
         {
+            printf("\n---- Menu Principal ----");
             printf("\nElija una opcion: ");
             printf("\n1) Ingreso de nuevo vehiculo");
             printf("\n2) Busqueda de vehiculo");
@@ -112,7 +146,7 @@ int main(int argc, char *argv[])
 
             } while (busquedaValida == 0);
 
-            Busqueda(busqueda, "inventario.txt");
+            Busqueda(busqueda, "inventario.txt", presupuestoMax);
 
             break;
 

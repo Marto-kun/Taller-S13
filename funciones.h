@@ -170,9 +170,10 @@ int esVacia(char *str)
  * @param buscar Busqueda ingresada por el usuario
  * @param archivo Puntero al nombre del archivo de inventario
  */
-void Busqueda(char buscar[50], const char *archivo)
+void Busqueda(char buscar[50], const char *archivo, float presupuesto)
 {
     int count = 0;
+    float precio;
     FILE *file = fopen(archivo, "r");
 
     if (file == NULL)
@@ -181,14 +182,18 @@ void Busqueda(char buscar[50], const char *archivo)
         return;
     }
 
-    char buffer[100];
+    char buffer[150];
 
     while (fgets(buffer, sizeof(buffer), file))
     {
-        if (strstr(buffer, buscar) != NULL)
+
+        if (sscanf(buffer, "%*s %*s %*s %*s %*i %f", &precio) == 1)
         {
-            printf("\n %s", buffer);
-            count++;
+            if (strstr(buffer, buscar) != NULL && precio <= presupuesto)
+            {
+                printf("\n %s", buffer);
+                count++;
+            }
         }
     }
     if (count == 0)
