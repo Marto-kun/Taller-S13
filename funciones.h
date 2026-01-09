@@ -169,6 +169,7 @@ int esVacia(char *str)
  *
  * @param buscar Busqueda ingresada por el usuario
  * @param archivo Puntero al nombre del archivo de inventario
+ * @param presupuesto Presupuesto maximo del cliente
  */
 void Busqueda(char buscar[50], const char *archivo, float presupuesto)
 {
