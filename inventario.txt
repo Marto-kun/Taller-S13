@@ -1,9 +1,9 @@
 Marca                Tipo       Modelo     Estado     Anio       Precio    
-jasd                 camioneta  dmax       usado      2003       2534543.00
+chevrolet            camioneta  dmax       usado      2003       2534543.00
 kia                  auto       picanto    nuevo      2003       34534.34  
 chevrolet            jeep       vitara     usado      2011       2.30      
 kia                  SUV        Sportage   nuevo      2025       5235254.50
 ford                 suv        xcape      nuevo      2025       45353.40  
 Toyota               auto       Corolla    usado      1981       2007.00   
-Nissan               jeep       SantaFe    usado      2000       25000.15  
+Nissan               jeep       SantaFe    Vendido    2000       25000.15  
 Hyundai              auto       Sonata     nuevo      2025       30500.50  

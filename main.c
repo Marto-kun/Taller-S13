@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     int count = 0;
-    int opc1;
+    int opc1, opc2;
     float presupuestoMax = 0;
     char entrada[50];
     char busqueda[50];
@@ -76,7 +76,8 @@ int main(int argc, char *argv[])
             printf("\nElija una opcion: ");
             printf("\n1) Ingreso de nuevo vehiculo");
             printf("\n2) Busqueda de vehiculo");
-            printf("\n3) Salir");
+            printf("\n3) Vender Vehiculo");
+            printf("\n4) Salir");
             printf("\n>>> ");
             // LimpiarBuffer();
 
@@ -151,6 +152,27 @@ int main(int argc, char *argv[])
             break;
 
         case 3:
+            printf("\n--- Venta de Vehiculo ---");
+            printf("\nIngrese el numero de linea del vehiculo a vender (ver en Busqueda): ");
+
+            if (fgets(entrada, 25, stdin) != NULL)
+            {
+                // Eliminar salto de linea
+                entrada[strcspn(entrada, "\n")] = '\0';
+                if (VerificacionDigitos(entrada))
+                {
+                    int numLinea = atoi(entrada);
+
+                    Vender("inventario.txt", numLinea);
+                }
+                else
+                {
+                    printf("\nEntrada invalida. Debe ingresar el numero de linea.");
+                }
+            }
+            break;
+
+        case 4:
             printf("\nGracias por usar nuestro sistema. Saliendo!!");
             break;
 
@@ -158,7 +180,7 @@ int main(int argc, char *argv[])
             printf("\nOpcion invalida, intentelo de nuevo...");
             break;
         }
-    } while (opc1 != 3);
+    } while (opc1 != 4);
 
     return 0;
 }

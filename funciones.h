@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -11,6 +12,7 @@ typedef struct
     char modelo[30];
     char estado[15];
     char tipo[30];
+    bool vendido;
 } Auto;
 
 /**
@@ -173,7 +175,7 @@ int esVacia(char *str)
  */
 void Busqueda(char buscar[50], const char *archivo, float presupuesto)
 {
-    int count = 0;
+    int count = 0, linea = 0;
     float precio;
     FILE *file = fopen(archivo, "r");
 
@@ -192,10 +194,11 @@ void Busqueda(char buscar[50], const char *archivo, float presupuesto)
         {
             if (strstr(buffer, buscar) != NULL && precio <= presupuesto)
             {
-                printf("\n %s", buffer);
+                printf("\n %i %s", linea, buffer);
                 count++;
             }
         }
+        linea++;
     }
     if (count == 0)
     {
@@ -204,9 +207,8 @@ void Busqueda(char buscar[50], const char *archivo, float presupuesto)
     else
     {
         printf("\nSe han encontrado %i vehiculo(s) con su busqueda", count);
+        fclose(file);
     }
-
-    fclose(file);
 }
 
 /**
@@ -389,4 +391,61 @@ void IngresarProducto(char entrada[50], FILE *archivo)
 
     fprintf(archivo, "%-20s %-10s %-10s %-10s %-10i %-10.2f\n", nuevo[count].marca, nuevo[count].tipo, nuevo[count].modelo, nuevo[count].estado, nuevo[count].anio, nuevo[count].precio);
     fclose(archivo);
+}
+
+/**
+ * @brief Cambia el estado de un vehículo a "Vendido"
+ * @param archivo Nombre del archivo original
+ * @param lineaVender El número de línea (índice) que se desea modificar
+ */
+void Vender(const char *archivo, int lineaVender)
+{
+    FILE *file = fopen(archivo, "r");
+    FILE *temp = fopen("temp.txt", "w");
+
+    if (file == NULL || temp == NULL)
+    {
+        perror("\nError al abrir los archivos");
+        return;
+    }
+
+    char buffer[150];
+    int lineaActual = 0;
+    int encontrado = 0;
+
+    while (fgets(buffer, sizeof(buffer), file))
+    {
+        if (lineaActual == lineaVender && lineaActual > 0)
+        {
+            Auto vehi;
+
+            sscanf(buffer, "%s %s %s %s %d %f", vehi.marca, vehi.tipo, vehi.modelo, vehi.estado, &vehi.anio, &vehi.precio);
+
+            strcpy(vehi.estado, "Vendido");
+
+            fprintf(temp, "%-20s %-10s %-10s %-10s %-10i %-10.2f\n", vehi.marca, vehi.tipo, vehi.modelo, vehi.estado, vehi.anio, vehi.precio);
+            encontrado = 1;
+        }
+        else
+        {
+
+            fputs(buffer, temp);
+        }
+        lineaActual++;
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    remove(archivo);
+    rename("temp.txt", archivo);
+
+    if (encontrado)
+    {
+        printf("\nVehiculo vendido exitosamente.");
+    }
+    else
+    {
+        printf("\nNo se pudo encontrar la linea especificada o es la cabecera.");
+    }
 }
